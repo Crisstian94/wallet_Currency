@@ -1,2 +1,2 @@
 # wallet_Currency
-Organizador Financiero
+ Planificador Financiero
