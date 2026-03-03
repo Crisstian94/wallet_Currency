@@ -41,7 +41,7 @@ const handleLogin = async () => {
   errorMsg.value = '';
   
   try {
-    const response = await api.post('/auth/login', form.value);
+    const response = await api.post('/login', form.value);
     
     if (response.data.status === 'success') {
       alert(`¡Bienvenido ${response.data.user.username}!`);
