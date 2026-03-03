@@ -19,9 +19,15 @@ app = FastAPI(
     version="1.0.0"
 )
 #Configuracion de CORS
+
+origins = [
+    "http://192.168.100.110:8888",
+    "http://localhost:8888",
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"],  # Permitir todas las fuentes (ajustar según sea necesario)
+    allow_origins=origins,  # Permitir todas las fuentes (ajustar según sea necesario)
     allow_credentials=True,
     allow_methods=["*"],  # Permitir todos los métodos HTTP
     allow_headers=["*"],  # Permitir todos los encabezados
