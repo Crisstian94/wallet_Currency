@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: planmaster-frontend
+  namespace: planmaster
+  labels:
+    app: frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+      - name: vue-app
+        # Esta es la imagen que construirás en el servidor
+        image: wallet-frontend:latest 
+        imagePullPolicy: Never # Útil si construyes la imagen localmente en el nodo
+        ports:
+        - containerPort: 80
+        resources:
+          limits:
+            cpu: "500m"
+            memory: "512Mi"
+          requests:
+            cpu: "200m"
+            memory: "256Mi"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend-service
+  namespace: planmaster
+spec:
+  # LoadBalancer si tu proveedor de K8s lo soporta, 
+  # o NodePort si es un servidor físico propio.
+  type: NodePort 
+  selector:
+    app: frontend
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80

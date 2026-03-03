@@ -1,0 +1,61 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: planmaster-backend
+  namespace: planmaster
+  labels:
+    app: backend
+spec:
+  replicas: 2  # Mantiene dos pods para que siempre haya disponibilidad
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+      - name: fastapi-app
+        # Reemplaza con el nombre de tu imagen en tu registro (Docker Hub, etc.)
+        image: crcastro94/wallet-backend:latest 
+        ports:
+        - containerPort: 8000
+        env:
+        # Inyectamos las credenciales desde el Secret que creamos antes
+        - name: DB_USER
+          valueFrom:
+            secretKeyRef:
+              name: db-credentials
+              key: db-user
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: db-credentials
+              key: db-password
+        # El HOST debe ser el nombre del servicio de MariaDB en K8s
+        - name: DB_HOST
+          value: "mariadb-service" 
+        - name: DB_NAME
+          value: "wallet_db"
+        resources:
+          limits:
+            cpu: "500m"
+            memory: "512Mi"
+          requests:
+            cpu: "250m"
+            memory: "256Mi"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-service
+  namespace: planmaster
+spec:
+  selector:
+    app: backend
+  ports:
+    - protocol: TCP
+      port: 80      # Puerto interno del clúster
+      targetPort: 8000 # Puerto donde escucha FastAPI
+  type: ClusterIP # Solo accesible dentro del clúster (el Frontend lo usará)
