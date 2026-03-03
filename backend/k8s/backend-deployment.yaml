@@ -1,8 +1,8 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: planmaster-backend
-  namespace: planmaster
+  name: wallet-backend
+  namespace: wallet-currency
   labels:
     app: backend
 spec:
@@ -18,7 +18,8 @@ spec:
       containers:
       - name: fastapi-app
         # Reemplaza con el nombre de tu imagen en tu registro (Docker Hub, etc.)
-        image: crcastro94/wallet-backend:latest 
+        image: wallet-backend:latest
+        imagePullPolicy: IfNotPresent # Evita descargar la imagen si ya está presente en el nodo 
         ports:
         - containerPort: 8000
         env:
@@ -56,6 +57,6 @@ spec:
     app: backend
   ports:
     - protocol: TCP
-      port: 80      # Puerto interno del clúster
+      port: 8889      # Puerto interno del clúster
       targetPort: 8000 # Puerto donde escucha FastAPI
   type: ClusterIP # Solo accesible dentro del clúster (el Frontend lo usará)

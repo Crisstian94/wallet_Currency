@@ -1,8 +1,8 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: planmaster-frontend
-  namespace: planmaster
+  name: wallet-frontend
+  namespace: wallet-currency
   labels:
     app: frontend
 spec:
@@ -34,7 +34,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: frontend-service
-  namespace: planmaster
+  namespace: wallet-currency
 spec:
   # LoadBalancer si tu proveedor de K8s lo soporta, 
   # o NodePort si es un servidor físico propio.
