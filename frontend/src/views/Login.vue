@@ -41,7 +41,9 @@ const handleLogin = async () => {
   errorMsg.value = '';
   
   try {
+    console.log("APP VERSION 2.0")
     const response = await api.post('/login', form.value);
+    console.log("APP VERSION 2.0");
     
     if (response.data.status === 'success') {
       alert(`¡Bienvenido ${response.data.user.username}!`);
