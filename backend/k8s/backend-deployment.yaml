@@ -36,7 +36,9 @@ spec:
               key: db-password
         # El HOST debe ser el nombre del servicio de MariaDB en K8s
         - name: DB_HOST
-          value: "mariadb-service" 
+          value: "mariadb-service"
+        - name: DB_PORT
+          value: "3307" 
         - name: DB_NAME
           value: "wallet_db"
         resources:
